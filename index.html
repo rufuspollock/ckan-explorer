@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CKAN Data Explorer</title>
+  <meta name="description" content="">
+  <meta name="author" content="Open Knowledge Foundation">
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet" type="text/css">
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="vendor/recline/vendor/slickgrid/2.0.1/slick.grid.css">
+  <link rel="stylesheet" href="vendor/recline/dist/recline.css">
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">CKAN Data Explorer</a>
+      <ul class="nav">
+        <li class="divider-vertical"></li>
+      </ul>
+      <ul class="nav pull-right">
+        <li>
+          <a class="nav-logo pull-left" href="http://okfn.org/" title="An Open Knowledge Foundation Project">
+            <img src="http://assets.okfn.org/p/okfn/img/logo_28x30.png" alt="Open Knowledge Foundation logo" />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<div class="content">
+  <div class="view home">
+    <div class="row">
+      <div class="span9">
+        <div class="help-div">
+          <h1>
+            Welcome
+            <br />
+            <small>
+              This application let's you explore, analyze and visualize data stored in a CKAN DataStore.
+            </small>
+          </h1>
+          <h3>Get Started</h3>
+          <p>Search for data to add in the sidebar. This will display datases
+          along with their data resources. If the data resource has data stored
+          in the DataStore you'll then be able to view it by clicking on
+          it.</p>
+        </div>
+        <div class="data-views-container"></div>
+      </div>
+      <div class="span3">
+        <div class="dataset-search-here"></div>
+        <!--img src="http://assets.okfn.org/images/icons/ajaxload-circle.gif" class="loading" /-->
+        <div class="placeholder-search"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      This service is run by the <a href="http://okfn.org">Open
+        Knowledge Foundation</a>
+      &ndash;
+      <a href="http://github.com/okfn/referencedata">Source Code</a>
+    </p>
+    <p>
+      <a href="http://opendefinition.org/okd/" title="Open Data">
+        <img src="http://assets.okfn.org/images/ok_buttons/od_80x15_blue.png" alt="" border="" /></a>
+      <a href="http://opendefinition.org/ossd/" title="Open Online Software Service">
+        <img src="http://assets.okfn.org/images/ok_buttons/os_80x15_orange_grey.png" alt="" border="" />
+      </a>
+    </p>
+  </footer>
+  </div><!-- /content -->
+</div><!-- /container -->
+
+<script src="vendor/recline/vendor/jquery/1.7.1/jquery.js"></script>
+<script src="vendor/recline/vendor/underscore/1.4.4/underscore.js"></script>
+<script src="vendor/recline/vendor/backbone/1.0.0/backbone.js"></script>
+<script src="vendor/recline/vendor/mustache/0.5.0-dev/mustache.js"></script>
+<script type="text/javascript" src="vendor/recline/vendor/slickgrid/2.0.1/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="vendor/recline/vendor/slickgrid/2.0.1/jquery.event.drag-2.0.min.js"></script>
+<script type="text/javascript" src="vendor/recline/vendor/slickgrid/2.0.1/slick.grid.min.js"></script>
+
+<script type="text/javascript" src="vendor/recline/dist/recline.js"></script>
+
+<script src="vendor/ckan.js/ckan.js"></script>
+
+<script src="js/app.js"></script>
+</body>
+</html>
+
