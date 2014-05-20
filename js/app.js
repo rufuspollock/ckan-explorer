@@ -137,6 +137,7 @@ jQuery(document).ready(function($) {
   });
   var $container = $('.data-views-container');
   search.on('resource:select', function(id) {
+    console.log(id);
     var $el = $('<div class="data-view"></div>');
     $container.append($el);
     var view = new DataView({
@@ -145,4 +146,28 @@ jQuery(document).ready(function($) {
     });
   });
 
+  // support for using query string state
+  var qs = parseQueryString(location.search);
+  console.log(qs);
+  if (qs.resource) {
+    search.trigger('resource:select', qs.resource);
+  }
 });
+
+parseQueryString = function(q) {
+  if (!q) {
+    return {};
+  }
+  var urlParams = {},
+    e, d = function (s) {
+      return decodeURIComponent(s.replace(/\+/g, " "));
+    },
+    r = /([^&=]+)=?([^&]*)/g;
+
+  if (q && q.length && q[0] === '?') q = q.slice(1);
+  while (e = r.exec(q)) {
+    // TODO: have values be array as query string allow repetition of keys
+    urlParams[d(e[1])] = d(e[2]);
+  }
+  return urlParams;
+};
