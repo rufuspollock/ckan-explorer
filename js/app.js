@@ -48,6 +48,27 @@ var DataView = Backbone.View.extend({
     this.dataset.query({size: this.dataset.recordCount});
   },
 
+  _makeMultiView: function(dataset, $el) {
+    var gridView = {
+        id: 'grid',
+        label: 'Grid',
+        view: new recline.View.SlickGrid({
+          model: dataset,
+          state: {
+            fitColumns: true
+          }
+        })
+      };
+    view = new recline.View.MultiView({
+      model: dataset,
+      views: [gridView],
+      sidebarViews: [],
+      el: $el
+    });
+    view.render();
+    return view;
+  },
+
   events: {
     'submit .query-sql': 'sqlQuery'
   },
@@ -60,24 +81,42 @@ var DataView = Backbone.View.extend({
       <div class="sql-error alert alert-error" style="display: none;"></div> \
       <button type="submit" class="btn btn-primary">Query</button> \
     </form> \
+    <div class="sql-results"></div> \
     <div class="multiview"></div> \
     ',
 
   sqlQuery: function(e) {
+    var self = this;
     e.preventDefault();
+
     var $error = this.$el.find('.sql-error');
     $error.hide();
     var sql = this.$el.find('.query-sql textarea').val();
     // replace ';' on end of sql as seems to trigger a json error
     sql = sql.replace(/;$/, '');
-    ckan.action('datastore_search_sql', {sql: sql}, function(err, data) {
+    ckan.datastoreSqlQuery(sql, function(err, data) {
       if (err) {
-        var parsed = JSON.parse(err.message);
-        var msg = '<p>Error: ' + parsed.error.info.orig[0] + '</p>';
+        var msg = '<p>Error: ' + err.message + '</p>';
         $error.html(msg);
         $error.show('slow');
         return;
       }
+
+      // now handle good case ...
+      var dataset = new recline.Model.Dataset({
+        records: data.hits,
+        fields: data.fields
+      });
+      dataset.fetch();
+      // destroy existing view ...
+      var $el = $('<div />');
+      $('.sql-results').append($el);
+      if (self.sqlResultsView) {
+        self.sqlResultsView.remove();
+      }
+
+      self.sqlResultsView = self._makeMultiView(dataset, $el);
+      dataset.query({size: dataset.recordCount});
     });
   }
 });
