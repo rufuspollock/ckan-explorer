@@ -24,6 +24,7 @@ var DataView = Backbone.View.extend({
 //      };
 //    });
   },
+
   render: function() {
     var gridView = {
         id: 'grid',
@@ -35,16 +36,52 @@ var DataView = Backbone.View.extend({
           }
         })
       };
+    var html = Mustache.render(this.template, {resource: this.dataset.toJSON()});
+    this.$el.html(html);
     this.view = new recline.View.MultiView({
       model: this.dataset,
       views: [gridView],
       sidebarViews: [],
-      el: $(this.el)
+      el: this.$el.find('.multiview')
     });
     this.view.render();
     this.dataset.query({size: this.dataset.recordCount});
+  },
+
+  events: {
+    'submit .query-sql': 'sqlQuery'
+  },
+
+  template: ' \
+    <form class="form query-sql"> \
+      <h3>SQL Query</h3> \
+      <p class="help-block">Query this table using SQL via the <a href="http://docs.ckan.org/en/latest/maintaining/datastore.html#ckanext.datastore.logic.action.datastore_search_sql">DataStore SQL API</a></p> \
+      <textarea style="width: 100%;">SELECT * FROM "{{resource.id}}"</textarea> \
+      <div class="sql-error alert alert-error" style="display: none;"></div> \
+      <button type="submit" class="btn btn-primary">Query</button> \
+    </form> \
+    <div class="multiview"></div> \
+    ',
+
+  sqlQuery: function(e) {
+    e.preventDefault();
+    var $error = this.$el.find('.sql-error');
+    $error.hide();
+    var sql = this.$el.find('.query-sql textarea').val();
+    // replace ';' on end of sql as seems to trigger a json error
+    sql = sql.replace(/;$/, '');
+    ckan.action('datastore_search_sql', {sql: sql}, function(err, data) {
+      if (err) {
+        var parsed = JSON.parse(err.message);
+        var msg = '<p>Error: ' + parsed.error.info.orig[0] + '</p>';
+        $error.html(msg);
+        $error.show('slow');
+        return;
+      }
+    });
   }
 });
+
 
 var CKANSearchWidget = Backbone.View.extend({
   template: '\
@@ -137,6 +174,7 @@ jQuery(document).ready(function($) {
   });
   var $container = $('.data-views-container');
   search.on('resource:select', function(id) {
+    $('.intro-div').hide('slow');
     console.log(id);
     var $el = $('<div class="data-view"></div>');
     $container.append($el);
