@@ -1,4 +1,4 @@
-var endpoint = 'http://datahub.io/api'
+var endpoint = 'http://demo.ckan.org/api'
   , ckan = new CKAN.Client(endpoint)
   ;
 
@@ -85,7 +85,7 @@ var CKANSearchWidget = Backbone.View.extend({
     _.bindAll(this, 'render');
     this.collection.bind('reset', this.render);
     // first get list of all resources in the datastore
-    ckan.action('datastore_search', {resource_id: '_table_metadata'}, function(err, out) {
+    ckan.action('datastore_search', {resource_id: '_table_metadata', limit: 100000}, function(err, out) {
       self.resourcesInDatastore = _.pluck(out.result.records, 'name');
       self.query();
     });
@@ -111,8 +111,10 @@ var CKANSearchWidget = Backbone.View.extend({
         // should have datastore_active set but unfortunately not ...
         // see https://raw.github.com/datasets/gold-prices/master/data/data.csv
         _.each(dataset.resources, function(res) {
-            console.log(res.id);
-            console.log(self.resourcesInDatastore);
+          // make sure it has a name because we use it in the templating ...
+          res.name = res.name || res.description.slice(0, 30) || 'No name';
+          // console.log(res.id);
+          // console.log(self.resourcesInDatastore);
           if (self.resourcesInDatastore.indexOf(res.id) != -1) {
             res.datastore_active = true;
           }
@@ -135,7 +137,6 @@ jQuery(document).ready(function($) {
   });
   var $container = $('.data-views-container');
   search.on('resource:select', function(id) {
-    console.log(id);
     var $el = $('<div class="data-view"></div>');
     $container.append($el);
     var view = new DataView({
