@@ -7,6 +7,11 @@ body {
   font-size: 15px;
 }
 
+.recline-slickgrid {
+  font-family: monospace;
+  font-size: 11px;
+}
+
 .content {
   background-color: #fff;
   padding: 20px;
