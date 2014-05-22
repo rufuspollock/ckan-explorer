@@ -26,25 +26,10 @@ var DataView = Backbone.View.extend({
   },
 
   render: function() {
-    var gridView = {
-        id: 'grid',
-        label: 'Grid',
-        view: new recline.View.SlickGrid({
-          model: this.dataset,
-          state: {
-            fitColumns: true
-          }
-        })
-      };
     var html = Mustache.render(this.template, {resource: this.dataset.toJSON()});
     this.$el.html(html);
-    this.view = new recline.View.MultiView({
-      model: this.dataset,
-      views: [gridView],
-      sidebarViews: [],
-      el: this.$el.find('.multiview')
-    });
-    this.view.render();
+
+    this.view = this._makeMultiView(this.dataset, this.$el.find('.multiview'));
     this.dataset.query({size: this.dataset.recordCount});
   },
 
@@ -59,13 +44,19 @@ var DataView = Backbone.View.extend({
           }
         })
       };
+    var graphView = {
+      id: 'graph',
+      label: 'Graph',
+      view: new recline.View.Flot({
+        model: dataset
+      })
+    };
     view = new recline.View.MultiView({
       model: dataset,
-      views: [gridView],
+      views: [gridView, graphView],
       sidebarViews: [],
       el: $el
     });
-    view.render();
     return view;
   },
 
