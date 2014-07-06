@@ -50,14 +50,22 @@ var DataView = Backbone.View.extend({
         model: dataset
       })
     };
+    var mapView = {
+      id: 'map',
+      label: 'Map',
+      view: new recline.View.Map({
+        model: dataset
+      })
+    };
     view = new recline.View.MultiView({
       model: dataset,
-      views: [gridView, graphView],
+      views: [gridView, graphView, mapView],
       sidebarViews: [],
       el: $el
     });
     return view;
   },
+
 
   events: {
     'submit .query-sql': 'sqlQuery'
