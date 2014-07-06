@@ -1,6 +1,5 @@
-var endpoint = 'http://demo.ckan.org/api'
-  , ckan = new CKAN.Client(endpoint)
-  ;
+// will be setup in document ready below as we need to parse query string
+var ckan = null;
 
 var DataView = Backbone.View.extend({
   class: 'data-view',
@@ -8,7 +7,7 @@ var DataView = Backbone.View.extend({
     var self = this;
     // var resource = new Backbone.Model
     this.dataset = new recline.Model.Dataset({
-      endpoint: endpoint,
+      endpoint: options.endpoint,
       id: options.resourceId,
       backend: 'ckan'
     });
@@ -199,24 +198,31 @@ var CKANSearchWidget = Backbone.View.extend({
 
 jQuery(document).ready(function($) {
   var $el = $('.dataset-search-here');
+  // support for using query string state
+  var qs = parseQueryString(location.search);
+  var endpoint = qs.endpoint || 'http://demo.ckan.org';
+  if (!endpoint.match(/api$/)) {
+    endpoint += '/api'
+  }
+  // defined in global namespace above but set to null
+  ckan = new CKAN.Client(endpoint)
+
   var search = new CKANSearchWidget({
     el: $el
   });
+
   var $container = $('.data-views-container');
   search.on('resource:select', function(id) {
     $('.intro-div').hide('slow');
-    console.log(id);
     var $el = $('<div class="data-view"></div>');
     $container.append($el);
     var view = new DataView({
       resourceId: id,
+      endpoint: endpoint,
       el: $el
     });
   });
 
-  // support for using query string state
-  var qs = parseQueryString(location.search);
-  console.log(qs);
   if (qs.resource) {
     search.trigger('resource:select', qs.resource);
   }
