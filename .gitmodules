@@ -1,6 +1,6 @@
 [submodule "vendor/recline"]
 	path = vendor/recline
-	url = git://github.com/okfn/recline
+	url = https://github.com/okfn/recline
 [submodule "vendor/ckan.js"]
 	path = vendor/ckan.js
-	url = git://github.com/okfn/ckan.js
+	url = https://github.com/okfn/ckan.js
