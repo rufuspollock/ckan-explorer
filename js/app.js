@@ -180,21 +180,21 @@ var CKANSearchWidget = Backbone.View.extend({
       e.preventDefault();
     }
     this.currentQuery = this.$('form input[type="search"]').val();
-    ckan.action('dataset_search', {q: this.currentQuery}, function(err, out) {
-      _.each(out.result.results, function(dataset) {
+    ckan.action('current_package_list_with_resources', {q: this.currentQuery}, function(err, out) {
+      _.each(out.result, function(dataset) {
         // should have datastore_active set but unfortunately not ...
         // see https://raw.github.com/datasets/gold-prices/master/data/data.csv
         _.each(dataset.resources, function(res) {
           // make sure it has a name because we use it in the templating ...
           res.name = res.name || res.description.slice(0, 30) || 'No name';
-          // console.log(res.id);
+          console.log(res.id);
           // console.log(self.resourcesInDatastore);
           if (self.resourcesInDatastore.indexOf(res.id) != -1) {
             res.datastore_active = true;
           }
         });
       });
-      self.collection.reset(out.result.results);
+      self.collection.reset(out.result);
     });
   },
   _selectResource: function(e) {
@@ -209,11 +209,12 @@ jQuery(document).ready(function($) {
   // support for using query string state
   var qs = parseQueryString(location.search);
   var endpoint = qs.endpoint || 'http://demo.ckan.org';
+  var apikey = qs.apikey || '';
   if (!endpoint.match(/api$/)) {
     endpoint += '/api'
   }
   // defined in global namespace above but set to null
-  ckan = new CKAN.Client(endpoint)
+  ckan = new CKAN.Client(endpoint, apikey)
 
   var search = new CKANSearchWidget({
     el: $el
