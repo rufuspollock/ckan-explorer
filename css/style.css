@@ -1,6 +1,21 @@
+.navbar-inner {
+  background-color: #ffffff;
+  background-image: none;
+}
+
+li .js-add-resource {
+  padding-right: 75px;
+}
+
+li .btn {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 html, body {
   background-color: #7285AC;
 }
+
 body {
   padding-top: 40px;
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
@@ -14,7 +29,7 @@ body {
 
 .content {
   background-color: #fff;
-  padding: 20px;
+  padding: 60px 20px 20px 20px;
   margin: 0 -20px;
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
      -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
@@ -52,7 +67,7 @@ footer {
   *******************************************************************/
 
 .recline-query-editor .text-query input {
-  width: 400px;
+  width: 300px;
 }
 
 .recline-query-editor button {
@@ -76,18 +91,26 @@ footer {
   list-style-type: none;
 }
 
+.data-search input, br {
+  display: none;
+}
+
 .data-search .resource-list li {
   border-left: solid #eee 3px;
   padding-left: 5px;
   margin-bottom: 2px;
   background-color: #eee;
   text-decoration: line-through;
+  font-size: 13px;
 }
 
 .data-search .resource-list li.active {
   border-left: solid orange 3px;
   background-color: #eee;
   text-decoration: none;
+  padding-top: 3px;
+  padding-bottom: 10px;
+  padding-right: 3px;
 }
 
 /********************************************************************
