@@ -10,6 +10,7 @@ var DataView = Backbone.View.extend({
     this.dataset = new recline.Model.Dataset({
       endpoint: options.endpoint,
       id: options.resourceId,
+      apiKey: options.apiKey,
       backend: 'ckan'
     });
     this.dataset.fetch()
@@ -249,6 +250,7 @@ jQuery(document).ready(function($) {
     var view = new DataView({
       resourceId: id,
       endpoint: endpoint,
+      apiKey: apikey,
       el: $el
     });
   });
